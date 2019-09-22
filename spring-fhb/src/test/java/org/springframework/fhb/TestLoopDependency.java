@@ -1,6 +1,7 @@
 package org.springframework.fhb;
 
-import com.sun.tracing.dtrace.ArgsAttributes;
+
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @Author huabao.fang
@@ -10,10 +11,7 @@ public class TestLoopDependency {
 
 
 	public void test1(){
-
-		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(FQ_SIMPLE_CONTEXT);
-		assertTrue(ctx.containsBean("someMessageSource"));
-		ctx.close();
+		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("");
 	}
 
 }

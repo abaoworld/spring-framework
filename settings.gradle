@@ -21,6 +21,7 @@ include "spring-webflux"
 include "spring-websocket"
 include "spring-framework-bom"
 include 'spring-fhb'
+include 'spring-fanghb'
 
 // Exposes gradle buildSrc for IDE support
 include "buildSrc"
