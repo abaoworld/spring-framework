@@ -1,3 +1,24 @@
 1 熟练掌握gradle
 2 如何将此gradle项目转maven
+3 BeanFactory与ApplicationContext的区别
+4 ApplicationContext的父子类关系
+5 spring xml是如何解析的
+6 spring中的类加载机制
+7 spring是如何实现懒加载和即时加载的
+8 singleton默认是非懒加载方式，prototype默认以赖加载的方式产生对象
+9 几种BeanDefinition 如 RootBeanDefinition，GenericBeanDefinition的使用场景
+10 属性注入的循环依赖问题
+11 bean的属性汇总，以及bean的分类
+12 FactoryBean 作用??
+    FactoryBean是一个接口，当在IOC容器中的Bean实现了FactoryBean后，
+    通过getBean(String BeanName)获取到的Bean对象并不是FactoryBean的实现类对象，
+    而是这个实现类中的getObject()方法返回的对象。要想获取FactoryBean的实现类，
+    就要getBean(&BeanName)，在BeanName之前加上&。
+
+13 如何生存doc文档
+14 spring是如何加载和使用properties流程
+15 spring 父子容器的实现  以及关于父子容器的应用
+16 spring aop的实现
+
+
 

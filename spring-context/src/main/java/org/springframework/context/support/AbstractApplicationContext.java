@@ -154,6 +154,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	static {
 		// Eagerly load the ContextClosedEvent class to avoid weird classloader issues
 		// on application shutdown in WebLogic 8.1. (Reported by Dustin Woods.)
+		// TODO  提前加载 ContextClosedEvent类 是为了避免在Weblogic1.8 应用关闭时 出现的诡异的类加载器问题
 		ContextClosedEvent.class.getName();
 	}
 
@@ -469,6 +470,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * this (child) application context environment if the parent is non-{@code null} and
 	 * its environment is an instance of {@link ConfigurableEnvironment}.
 	 * @see ConfigurableEnvironment#merge(ConfigurableEnvironment)
+	 *
+	 *
 	 */
 	@Override
 	public void setParent(@Nullable ApplicationContext parent) {
@@ -513,10 +516,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
+		//fanghuabao 同一 applicationContext实例触发两次refresh  此方法会排队执行
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
 			prepareRefresh();
-
+			//fanghuabao 解析xml 同时beanDefinitionMap
 			// Tell the subclass to refresh the internal bean factory.
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
@@ -533,7 +537,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Register bean processors that intercept bean creation.
 				registerBeanPostProcessors(beanFactory);
 
-				// Initialize message source for this context.
+				// Initialize message source for this context. //fanghuabao  TODO ??
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
@@ -579,6 +583,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Prepare this context for refreshing, setting its startup date and
 	 * active flag as well as performing any initialization of property sources.
+	 *
+	 * 上下文刷新准备阶段
+	 * 1 startDate closed,active
+	 * 2 property资源并做校验
+	 * 3 初始化earlyApplicationListeners和earlyApplicationEvents
 	 */
 	protected void prepareRefresh() {
 		// Switch to active.
@@ -594,7 +603,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				logger.debug("Refreshing " + getDisplayName());
 			}
 		}
-
+		//fanghuabao 此方法是protected 方便为子类提供属性扩展实现  TODO 需要演练
 		// Initialize any placeholder property sources in the context environment.
 		initPropertySources();
 
@@ -640,11 +649,13 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Configure the factory's standard context characteristics,
 	 * such as the context's ClassLoader and post-processors.
+	 * TODO
 	 * @param beanFactory the BeanFactory to configure
 	 */
 	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		// Tell the internal bean factory to use the context's class loader etc.
 		beanFactory.setBeanClassLoader(getClassLoader());
+		//fanghuabao 默认支持value值得EL表达式
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
@@ -873,7 +884,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Allow for caching all bean definition metadata, not expecting further changes.
 		beanFactory.freezeConfiguration();
 
-		// Instantiate all remaining (non-lazy-init) singletons.
+		// Instantiate all remaining (non-lazy-init) singletons. // @fanghuabao 实例化所有剩下的非懒加载单例对象
 		beanFactory.preInstantiateSingletons();
 	}
 

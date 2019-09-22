@@ -10,12 +10,12 @@ import static org.junit.Assert.assertTrue;
  * @Date 07:25 2019-09-17
  * @Description 测试spring循环依赖问题
  **/
-public class LoopDependencyTest {
+public class FhbLoopDependencyTest {
 
 	//测试spring循环依赖问题
 	@Test
 	public void testLoopDependency(){
-		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("/org/springframework/context/support/loopDependencyContext.xml");
+		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("/org/springframework/context/support/fhbLoopDependencyContext.xml");
 		assertTrue(ctx.containsBean("a"));
 		assertTrue(ctx.containsBean("b"));
 		ctx.close();
@@ -28,6 +28,7 @@ public class LoopDependencyTest {
 		private B b;
 
 		public A() {
+			System.out.println("A init ...");//fanghuabao 此处断点  可知悉单例Bean如何解决循环依赖问题
 		}
 
 		@Override
@@ -42,6 +43,7 @@ public class LoopDependencyTest {
 		private A a;
 
 		public B() {
+			System.out.println("B init ...");
 		}
 
 		@Override

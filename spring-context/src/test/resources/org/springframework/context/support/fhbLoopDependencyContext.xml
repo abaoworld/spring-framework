@@ -11,9 +11,9 @@
 
 
 	<bean id="b"
-			class="org.springframework.context.support.LoopDependencyTest.B"/>
+			class="org.springframework.context.support.FhbLoopDependencyTest.B"/>
 	<bean id="a"
-		  class="org.springframework.context.support.LoopDependencyTest.A"/>
+		  class="org.springframework.context.support.FhbLoopDependencyTest.A"/>
 
 	<context:component-scan base-package="org.springframework.context.support" />
 

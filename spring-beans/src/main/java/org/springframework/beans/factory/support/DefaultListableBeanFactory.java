@@ -822,11 +822,20 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		for (String beanName : beanNames) {
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
-				if (isFactoryBean(beanName)) {
+				if (isFactoryBean(beanName)) {//fanghuabao TODO 作用??
 					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
 					if (bean instanceof FactoryBean) {
 						final FactoryBean<?> factory = (FactoryBean<?>) bean;
-						boolean isEagerInit;
+						boolean isEagerInit;// @fanghuabao
+						//fanghuabao  SmartFactoryBean TODO ??
+						/**
+						 * @fanghuabao  System.getSecurityManager()
+						 * 当运行未知的Java程序的时候，该程序可能有恶意代码（删除系统文件、重启系统等），
+						 * 为了防止运行恶意代码对系统产生影响，需要对运行的代码的权限进行控制，
+						 * 这时候就要启用Java安全管理器
+						 * 参考地址 https://www.cnblogs.com/yaowen/p/10117893.html
+						 */
+
 						if (System.getSecurityManager() != null && factory instanceof SmartFactoryBean) {
 							isEagerInit = AccessController.doPrivileged((PrivilegedAction<Boolean>)
 											((SmartFactoryBean<?>) factory)::isEagerInit,
