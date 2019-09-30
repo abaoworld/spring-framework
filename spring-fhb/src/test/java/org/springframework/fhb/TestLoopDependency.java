@@ -11,7 +11,9 @@ public class TestLoopDependency {
 
 
 	public void test1(){
-		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("");
+
+		ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext("/org/springframework/context/support/fhbLoopDependencyContext.xml");
+		ac.close();
 	}
 
 }
