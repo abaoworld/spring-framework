@@ -11,7 +11,6 @@ public class TestLoopDependency {
 
 
 	public void test1(){
-		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("");
 	}
 
 }
